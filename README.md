@@ -1,4 +1,4 @@
-<img width="1262" height="722" alt="image" src="https://github.com/user-attachments/assets/98e4d015-2151-49f1-a7fb-268da760255d" /># Parameter-Efficient Fine-Tuning of Qwen2.5-1.5B for Agricultural Q&A
+# Parameter-Efficient Fine-Tuning of Qwen2.5-1.5B for Agricultural Q&A
 
 A controlled study of **LoRA vs QLoRA** for adapting a small instruction-tuned LLM to agricultural question answering — with a focus on **task performance, response behavior, computational efficiency, and failure analysis**.
 
@@ -487,7 +487,7 @@ A full technical report covering the experimental methodology, evaluation framew
 ## Screenshots
 
 ### Evaluation Validation
-images/pass.png
+![Metrics](images/Metrics.png)
 
 ### Quantitative Results
 images/metrics.png

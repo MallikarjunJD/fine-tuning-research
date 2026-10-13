@@ -1,0 +1,20 @@
+# Core fine-tuning stack (Kaggle already ships torch + CUDA; do not reinstall torch on Kaggle).
+# Versions are lower bounds verified against current (2026) documented APIs:
+# - trl >= 0.12 introduced the modern SFTTrainer(model, train_dataset, peft_config=...) signature
+#   (no more `tokenizer=` kwarg, dataset formatting is automatic).
+# - transformers >= 4.46 for stable Qwen2.5 support.
+# - peft >= 0.13 for current LoraConfig defaults / target_modules="all-linear" support.
+# - bitsandbytes >= 0.43 for stable 4-bit NF4 + double quantization on T4/P100.
+transformers>=4.46.0
+datasets>=2.20.0
+peft>=0.13.0
+trl>=0.12.0
+accelerate>=0.34.0
+bitsandbytes>=0.43.3
+evaluate>=0.4.2
+sentence-transformers>=3.0.0
+scikit-learn>=1.4.0
+matplotlib>=3.8.0
+pandas>=2.2.0
+huggingface_hub>=0.24.0
+sentencepiece>=0.2.0

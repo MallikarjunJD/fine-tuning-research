@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# Environments
+.venv/
+venv/
+.env
+
+# Model artifacts (large binaries — push adapters to HF Hub instead of git)
+outputs/
+checkpoints/
+*.safetensors
+*.bin
+*.pt
+*.gguf
+wandb/
+
+# Data caches
+.cache/
+data/raw/
+data/processed/
+
+# OS
+.DS_Store
+Thumbs.db

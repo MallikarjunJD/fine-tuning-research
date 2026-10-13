@@ -1,0 +1,13 @@
+# Deployment requirements (CPU Space / local). On a GPU box keep the CUDA torch you already have.
+--extra-index-url https://download.pytorch.org/whl/cpu
+torch
+transformers>=4.46.0
+peft>=0.13.0
+accelerate>=0.34.0
+huggingface_hub>=0.24.0
+safetensors
+sentencepiece
+scikit-learn          # only for the optional TF-IDF demo retriever
+gradio>=4.0           # for app_gradio.py
+streamlit>=1.35.0     # for app.py
+# bitsandbytes        # add ONLY for 4-bit inference on an NVIDIA GPU (AGRI_4BIT=1)

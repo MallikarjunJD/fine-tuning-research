@@ -487,13 +487,15 @@ A full technical report covering the experimental methodology, evaluation framew
 ## Screenshots
 
 ### Evaluation Validation
-![Metrics](images/Metrics.png)
+![Pass](images/PassedSelfTest.png)
 
 ### Quantitative Results
-images/metrics.png
+![Metrics](images/Matrics.png)
 
 ### Base vs LoRA vs QLoRA
-images/comparison1.png
+![Response 1](images/Response1.png)
+![Response 2](images/Response2.png)
+![Response 3](images/Response3.png)
 
 
 ## Limitations

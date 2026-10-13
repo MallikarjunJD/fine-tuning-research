@@ -1,4 +1,4 @@
-# Parameter-Efficient Fine-Tuning of Qwen2.5-1.5B for Agricultural Q&A
+<img width="1262" height="722" alt="image" src="https://github.com/user-attachments/assets/98e4d015-2151-49f1-a7fb-268da760255d" /># Parameter-Efficient Fine-Tuning of Qwen2.5-1.5B for Agricultural Q&A
 
 A controlled study of **LoRA vs QLoRA** for adapting a small instruction-tuned LLM to agricultural question answering — with a focus on **task performance, response behavior, computational efficiency, and failure analysis**.
 
@@ -434,13 +434,23 @@ fine-tuning-research/
 │
 ├── README.md
 ├── PROJECT_REPORT.md
-├── Notebook_guide.md
-├── DEPLOYMENT.md
+│  
+├── tests/
+│   └── test_agri_llm.py
+│  
+├── images/
+│   ├── Metrics.png
+│   ├── PassedSelfTest.png
+│   ├── Response1.png
+│   ├── Response2.png
+│   └── Response3.png
 │
 ├── notebooks/
-│   └── fine_tuning_experiment.ipynb
+│   ├── Lora&Qlora_Training.ipynb
+│   └── Inference, evaluation & deployment(LoRA&QLoRA).ipynb
 │
 ├── src/
+│   ├── agri_llm.py
 │   ├── data.py
 │   ├── train.py
 │   ├── evaluate.py
@@ -451,8 +461,8 @@ fine-tuning-research/
 │
 ├── app/
 │   ├── app.py
-│   ├── requirements.txt
-│   └── README_SPACE.md
+│   ├── app_gradio.py
+│   └── requirements.txt
 │
 ├── configs/
 │   └── training_config.yaml
@@ -563,3 +573,16 @@ That is the motivation for the next project: **Fine-Tuning + RAG**.
 MIT for the code in this repository.
 
 The base model and dataset have their own licenses and usage conditions. Refer to their respective Hugging Face pages before downstream or commercial use.
+
+---
+
+## Author
+
+**Mallikarjun Jadi**  
+Machine Learning Engineer
+
+This project is part of a broader research and engineering journey focused on building trustworthy AI systems for agriculture through LLM fine-tuning, retrieval-augmented generation, and evaluation-driven development.
+
+GitHub: https://github.com/MallikarjunJD  
+Hugging Face: https://huggingface.co/MallikarjunJadi
+Linkedin: https://www.linkedin.com/in/mallikarjunjadi

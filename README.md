@@ -494,8 +494,8 @@ A full technical report covering the experimental methodology, evaluation framew
 
 ### Base vs LoRA vs QLoRA
 ![Response 1](images/Response1.png)
-![Response 2](images/Response2.png)
-![Response 3](images/Response3.png)
+![Response 2](images/Response2.jpeg)
+![Response 3](images/Response3.jpeg)
 
 
 ## Limitations

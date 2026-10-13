@@ -1,0 +1,116 @@
+# =============================================================================
+# training_config.yaml
+# Single source of truth for the experiment. src/train.py, src/evaluate.py and
+# the notebook all read from this file so that LoRA and QLoRA runs are
+# comparable (same model, same data, same seed, only the PEFT method differs).
+# =============================================================================
+
+project:
+  name: "agri-qa-lora-qlora"
+  seed: 42
+  task: "instruction-tuned agricultural Q&A"
+
+model:
+  base_model_id: "Qwen/Qwen2.5-1.5B-Instruct"
+  # Why this model: see README.md "Model" section / Notebook_guide.md Decision Log.
+  max_seq_length: 512
+
+dataset:
+  hf_id: "KisanVaani/agriculture-qa-english-only"
+  train_size: 4000        # subsample for a ~1-2 day Kaggle budget; full set is ~22.6k rows
+  val_size: 500
+  test_size: 500
+  held_out_for_qualitative_eval: 20   # examples never shown to the model during training
+  question_field: "question"
+  answer_field: "answers"
+
+prompt:
+  system_instruction: >
+    You are an agricultural assistant. Answer the farmer's question clearly,
+    correctly, and concisely, in plain English.
+  template: |
+    <|im_start|>system
+    {system}<|im_end|>
+    <|im_start|>user
+    {question}<|im_end|>
+    <|im_start|>assistant
+    {answer}<|im_end|>
+
+lora:
+  r: 16
+  lora_alpha: 32
+  lora_dropout: 0.05
+  bias: "none"
+  task_type: "CAUSAL_LM"
+  target_modules: ["q_proj", "k_proj", "v_proj", "o_proj"]
+
+qlora:
+  load_in_4bit: true
+  bnb_4bit_quant_type: "nf4"
+  bnb_4bit_use_double_quant: true
+  bnb_4bit_compute_dtype: "bfloat16"
+  # LoRA hyperparameters reused from the `lora` block above — QLoRA changes
+  # HOW the base weights are stored, not the adapter design.
+
+training:
+  num_train_epochs: 3
+  per_device_train_batch_size: 4
+  gradient_accumulation_steps: 4     # effective batch size = 16
+  learning_rate: 2.0e-4              # ~10x higher than typical full fine-tune LR (PEFT convention)
+  warmup_ratio: 0.03
+  weight_decay: 0.01
+  lr_scheduler_type: "cosine"
+  logging_steps: 10
+  eval_strategy: "steps"
+  eval_steps: 50
+  save_strategy: "steps"
+  save_steps: 50
+  save_total_limit: 2
+  bf16: true                          # T4/P100 on Kaggle: fall back to fp16=true, bf16=false if bf16 unsupported
+  fp16: false
+  optim: "paged_adamw_8bit"           # pairs naturally with bitsandbytes; falls back to adamw_torch off-GPU
+  report_to: "none"
+
+# Per-mode overrides. These are the values the published adapters were ACTUALLY trained with.
+# NOTE: LoRA and QLoRA differ in learning rate and micro-batch (effective batch is 16 for both),
+# so the LoRA-vs-QLoRA comparison is not perfectly controlled - say so when you report it.
+training_overrides:
+  lora:
+    per_device_train_batch_size: 4
+    gradient_accumulation_steps: 4
+    learning_rate: 2.0e-4
+    warmup_ratio: 0.03
+    eval_steps: 50
+    save_steps: 50
+  qlora:
+    per_device_train_batch_size: 2
+    gradient_accumulation_steps: 8
+    learning_rate: 1.0e-4
+    warmup_ratio: 0.05
+    eval_steps: 25
+    save_steps: 25
+    optim: "paged_adamw_8bit"
+
+ablation:
+  parameter: "lora_r"
+  values: [4, 16, 64]
+  fixed_epochs: 1
+  note: >
+    Rank ablation chosen over dataset-size or epoch ablation because it is the
+    cheapest to run fairly (same data, same steps) while directly answering
+    "how much capacity does the adapter need for this task?"
+
+generation:
+  max_new_tokens: 160
+  do_sample: false
+  temperature: 1.0
+  repetition_penalty: 1.1
+
+evaluation:
+  metrics: ["rouge_l", "bertscore_f1", "exact_match_rate"]
+  note: >
+    ROUGE-L and BERTScore are used instead of BLEU because this is
+    open-ended free-text QA, not translation; BLEU's n-gram precision
+    penalizes valid paraphrases too harshly. Exact match is reported only
+    as a diagnostic, not a primary metric, since agricultural answers are
+    rarely single canonical strings.

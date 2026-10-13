@@ -472,6 +472,7 @@ fine-tuning-research/
 │   └── fine_tuned_results.md
 │
 ├── requirements.txt
+├── LICENSE
 └── .gitignore
 ```
 
